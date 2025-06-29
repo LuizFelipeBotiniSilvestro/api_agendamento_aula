@@ -26,4 +26,13 @@ public static class TipoAulaHelper
             _ => throw new ArgumentException("O campo 'tp_aula' é inválido. Use 1–4 ou nomes válidos.")
         };
     }
+
+    public static string ToNome(long tp_aula) => ((TipoAulaEnum)tp_aula) switch
+    {
+        TipoAulaEnum.Cross => "Cross",
+        TipoAulaEnum.Musculacao => "Musculação",
+        TipoAulaEnum.Pilates => "Pilates",
+        TipoAulaEnum.Spinning => "Spinning",
+        _ => "Desconhecido"
+    };
 }

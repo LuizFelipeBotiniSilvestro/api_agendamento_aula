@@ -33,6 +33,11 @@ public class AlunoRepository : IAlunoRepository
         }
     }
 
+    public async Task<List<Aluno>> ListarAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Alunos.AsNoTracking().OrderByDescending(x => x.dt_inc).ToListAsync(cancellationToken);
+    }
+
     public async Task<bool> VerificarAlunoExisteAsync(long id_aluno, CancellationToken cancellationToken)
     {
         return await _context.Alunos.AnyAsync(a => a.Id == id_aluno, cancellationToken);

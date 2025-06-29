@@ -7,11 +7,16 @@ namespace SistemaAgendamento.Aula;
 public class AulaController : ControllerBase
 {
     private readonly ICreateAulaUseCase _createAulaUseCase;
+    private readonly IGetAulasUseCase _getAulasUseCase;
     private readonly ILogger<AulaController> _logger;
 
-    public AulaController(ICreateAulaUseCase createAulaUseCase, ILogger<AulaController> logger)
+    public AulaController(ICreateAulaUseCase createAulaUseCase, 
+                          IGetAulasUseCase getAulasUseCase,
+                          ILogger<AulaController> logger
+                         )
     {
         _createAulaUseCase = createAulaUseCase;
+        _getAulasUseCase = getAulasUseCase;
         _logger = logger;
     }
 
@@ -34,4 +39,19 @@ public class AulaController : ControllerBase
             return StatusCode(500, new { erro = "Erro inesperado ao criar aula." });
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Get(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var aulas = await _getAulasUseCase.ExecutarAsync(cancellationToken);
+            return Ok(aulas);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro ao obter aulas: {ex.Message}");
+        }
+    }
+
 }

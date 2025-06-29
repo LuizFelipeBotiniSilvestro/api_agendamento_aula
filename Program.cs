@@ -23,9 +23,11 @@ builder.Services.AddDbContext<AgendamentoAlunoDbContext>(options =>
 
 // (Módulo Aluno)
 builder.Services.AddScoped<ICreateAlunoUseCase, CreateAlunoUseCase>();
+builder.Services.AddScoped<IGetAlunosUseCase, GetAlunosUseCase>();
 builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
 // (Módulo Aula)
 builder.Services.AddScoped<ICreateAulaUseCase, CreateAulaUseCase>();
+builder.Services.AddScoped<IGetAulasUseCase, GetAulasUseCase>();
 builder.Services.AddScoped<IAulaRepository, AulaRepository>();
 // (AgendamentoAula)
 builder.Services.AddScoped<ICreateAgendamentoAulaUseCase, CreateAgendamentoAulaUseCase>();

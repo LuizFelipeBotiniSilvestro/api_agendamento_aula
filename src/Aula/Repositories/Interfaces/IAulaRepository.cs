@@ -7,4 +7,6 @@ public interface IAulaRepository
     Task<Aula?> BuscarPorIdAsync(long id, CancellationToken cancellationToken);
 
     Task<bool> VerificarAulaExisteAsync(long id_aula, CancellationToken cancellationToken);
+
+    Task<IEnumerable<Aula>> getAulasAsync(CancellationToken cancellationToken);
 }

@@ -31,4 +31,9 @@ public class AulaRepository : IAulaRepository
     {
         return await _context.Aula.AnyAsync(a => a.Id == id_aula, cancellationToken);
     }
+
+    public async Task<IEnumerable<Aula>> getAulasAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Aula.AsNoTracking().ToListAsync(cancellationToken);
+    }
 }

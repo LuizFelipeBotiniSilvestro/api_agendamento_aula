@@ -7,11 +7,17 @@ namespace SistemaAgendamento.Aluno;
 public class AlunoController : ControllerBase
 {
     private readonly ICreateAlunoUseCase _createAlunoUseCase;
+
+     private readonly IGetAlunosUseCase _getAlunoUseCase;
     private readonly ILogger<AlunoController> _logger;
 
-    public AlunoController(ICreateAlunoUseCase createAlunoUseCase, ILogger<AlunoController> logger)
+    public AlunoController(ICreateAlunoUseCase createAlunoUseCase, 
+                           IGetAlunosUseCase getAlunoUseCase, 
+                           ILogger<AlunoController> logger
+                           )
     {
         _createAlunoUseCase = createAlunoUseCase;
+        _getAlunoUseCase = getAlunoUseCase;
         _logger = logger;
     }
 
@@ -43,4 +49,19 @@ public class AlunoController : ControllerBase
             return StatusCode(500, "Erro interno ao processar a solicitação.");
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> ListarAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var alunos = await _getAlunoUseCase.ExecutarAsync(cancellationToken);
+            return Ok(alunos);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro ao listar alunos: {ex.Message}");
+        }
+    }
+
 }
