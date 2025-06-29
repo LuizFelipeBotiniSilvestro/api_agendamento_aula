@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace SistemaAgendamento.Aula;
 
 public class AulaRepository : IAulaRepository
@@ -18,5 +20,10 @@ public class AulaRepository : IAulaRepository
         await _context.Entry(aula).ReloadAsync(cancellationToken);
         
         return aula;
+    }
+
+    public async Task<Aula?> BuscarPorIdAsync(long id, CancellationToken cancellationToken)
+    {
+        return await _context.Aula.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 }

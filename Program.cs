@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaAgendamento.Aluno;
 using SistemaAgendamento.Aula;
+using SistemaAgendamento.AgendamentoAula;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +15,20 @@ builder.Services.AddDbContext<AlunoDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("db")));
 builder.Services.AddDbContext<AulaDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("db")));
+builder.Services.AddDbContext<AgendamentoAulaDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("db")));
+
 
 // 💡 Injeção de dependência 
-
 // Módulo Aluno
 builder.Services.AddScoped<ICreateAlunoUseCase, CreateAlunoUseCase>();
 builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
 // Módulo Aula
 builder.Services.AddScoped<ICreateAulaUseCase, CreateAulaUseCase>();
 builder.Services.AddScoped<IAulaRepository, AulaRepository>();
-
+// Injeção de dependência (AgendamentoAula)
+builder.Services.AddScoped<ICreateAgendamentoAulaUseCase, CreateAgendamentoAulaUseCase>();
+builder.Services.AddScoped<IAgendamentoAulaRepository, AgendamentoAulaRepository>();
 
 var app = builder.Build();
 
