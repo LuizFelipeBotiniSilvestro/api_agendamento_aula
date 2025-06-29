@@ -8,9 +8,28 @@ Este sistema permite:
 
 - Cadastro de **alunos**, com plano (Mensal, Trimestral, Anual)
 - Cadastro de **aulas** (Cross, Musculação, Pilates, Spinning)
-- **Agendamento** de alunos nas aulas
+- Cadastro de **agendamento de aulas** (Aula e Data)
+- Cadastro de **agendamento de alunos nas aulas**
 - Relatórios por aluno com total de agendamentos e aulas mais frequentadas
 
+Fluxograma de funcionamento
+Etapas:
+1. Cadastro de Aula:
+Ex: Pilates, capacidade 15, tipo 3
+
+2. Cadastro de Aluno:
+Ex: Luiz Felipe, plano Mensal
+
+3. Cadastro de Agendamento da Aula:
+Ex: Pilates, às segundas-feiras 20h:
+id 1: 30/06
+id 2: 07/07
+id 3: 14/07
+
+4. Cadastro de Agendamento do Aluno:
+Ex: Luiz (id 1) é vinculado a cada agendamento_aula (id 1, 2, 3) 
+
+"Ou seja, sabe-se que Luiz está vinculado às aulas de Pilates toda segunda-feira 20:00h".
 ---
 
 ## 🧱 Estrutura do Projeto
