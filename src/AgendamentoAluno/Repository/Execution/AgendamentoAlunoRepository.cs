@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SistemaAgendamento.AgendamentoAula;
 using SistemaAgendamento.Aluno;
 using SistemaAgendamento.Aula;
@@ -70,5 +71,30 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
             .Set<GetAgendamentoAlunoResult>()
             .FromSqlRaw(sql)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<GetTiposAulaMaisFrequentesResult>> ObterTiposAulaMaisFrequentesPorAlunoAsync(long id_aluno, CancellationToken cancellationToken)
+    {
+        var sql = @"
+            SELECT 
+                a.tp_aula,
+                CASE a.tp_aula
+                    WHEN 1 THEN 'Cross'
+                    WHEN 2 THEN 'Musculação'
+                    WHEN 3 THEN 'Pilates'
+                    WHEN 4 THEN 'Spinning'
+                    ELSE 'Desconhecido'
+                END as nm_tipo_aula,
+                COUNT(*) as total
+            FROM agendamento.tb_agendamento_aluno aa
+            JOIN agendamento.tb_agendamento_aula ag ON ag.id = aa.id_agendamento_aula
+            JOIN cadastro.tb_aula a ON a.id = ag.id_aula
+            WHERE aa.id_aluno = @id_aluno
+            GROUP BY a.tp_aula
+            ORDER BY total DESC";
+
+        var param = new NpgsqlParameter("id_aluno", id_aluno);
+
+        return await _context.Database.SqlQueryRaw<GetTiposAulaMaisFrequentesResult>(sql, param).ToListAsync(cancellationToken);
     }
 }

@@ -15,19 +15,31 @@ Este sistema permite:
 Fluxograma de funcionamento
 Etapas:
 1. Cadastro de Aula:
-Ex: Pilates, capacidade 15, tipo 3
+Ex: 
+nm_aula: Pilates
+tp_aula: 1 ou "cross"
+nr_capacidade: 15
 
 2. Cadastro de Aluno:
-Ex: Luiz Felipe, plano Mensal
+Ex: 
+nm_aluno: Luiz Felipe
+tp_plano: 1 ou "mensal"
 
 3. Cadastro de Agendamento da Aula:
-Ex: Pilates, às segundas-feiras 20h:
-id 1: 30/06
-id 2: 07/07
-id 3: 14/07
+Ex: 
+id_aula: 1 (Pilates)
+dt_aula: 30/06/2025 20:00h
+
+id_aula: 1 (Pilates)
+dt_aula: 07/07/2025 20:00h
 
 4. Cadastro de Agendamento do Aluno:
-Ex: Luiz (id 1) é vinculado a cada agendamento_aula (id 1, 2, 3) 
+Ex: 
+id_aluno: 1 (Luiz)
+id_agendamento_aula: 1  (Pilates - 30/06/2025 20:00h)
+
+id_aluno: 1 (Luiz)
+id_agendamento_aula: 2  (Pilates - 07/07/2025 20:00h)
 
 "Ou seja, sabe-se que Luiz está vinculado às aulas de Pilates toda segunda-feira 20:00h".
 ---

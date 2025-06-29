@@ -6,4 +6,7 @@ public interface IAgendamentoAlunoRepository
     Task<int> ObterTotalAlunosNaAula(long id_agendamento_aula, CancellationToken cancellationToken);
     Task<AgendamentoAlunoEntity> CriarAsync(AgendamentoAlunoEntity entity, CancellationToken cancellationToken);
     Task<List<GetAgendamentoAlunoResult>> GetAsync(CancellationToken cancellationToken);
+
+    //
+    Task<List<GetTiposAulaMaisFrequentesResult>> ObterTiposAulaMaisFrequentesPorAlunoAsync(long id_aluno, CancellationToken cancellationToken);
 }
