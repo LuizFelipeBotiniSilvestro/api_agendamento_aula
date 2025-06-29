@@ -13,7 +13,7 @@ public class AgendamentoAulaRepository : IAgendamentoAulaRepository
 
     public async Task<AgendamentoAula> CriarAsync(AgendamentoAula agendamento, CancellationToken cancellationToken)
     {
-        await _context.agendamentoAula.AddAsync(agendamento, cancellationToken);
+        await _context.AgendamentoAula.AddAsync(agendamento, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         await _context.Entry(agendamento).ReloadAsync(cancellationToken);
         return agendamento;

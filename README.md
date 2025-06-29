@@ -39,9 +39,10 @@ Este sistema permite:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repo.git
+   git clone https://github.com/LuizFelipeBotiniSilvestro/api_agendamento_aula.git
 
-2. Vá para a pasta da API:
+2. Certifique-se de estar na pasta da API: SistemaAgendamento.Api
+    Caso necessário:
     cd SistemaAgendamento.Api
 
 3. Execute o projeto
@@ -50,6 +51,8 @@ Este sistema permite:
 4. Acesse a documentação Swagger:
     http://localhost:5045/swagger
 
+Observação: O banco de dados já está configurado (em ambiente de nuvem), não sendo necessária nenhuma ação adicional a esse respeito.
+
 📌 Observações
 A arquitetura é modularizada por domínio (Aluno, Aula, etc.).
 
@@ -57,8 +60,20 @@ O código segue boas práticas com validações, tratamento de erros e separaç�
 
 Use CancellationToken em métodos assíncronos.
 
-🧑‍💻 Desenvolvido por
-Luiz Felipe Botini de Silvestro
-10 anos de experiência em setores administrativos/financeiros + 3 como programador
-Graduado em Ciência da Computação pela UNESC
-Contato/whats: (48) 98841-7522 
+## 🚀 Responsável
+
+🧑‍💻 Desenvolvido por: Luiz Felipe Botini de Silvestro
+📅 Data: Jun/2025
+
+Profissional com 10 anos de experiência em áreas administrativas e financeiras, e mais de 7 anos de atuação com programação.
+Graduado em Ciência da Computação pela UNESC.
+
+📅 Experiência profissional:
+
+2013–2022: Atuação em setores administrativos e financeiros.
+
+2018–2024: Ingressou na graduação em Ciência da Computação, conciliando estudos com a experiência profissional.
+
+Desde 2022: Transição completa para a área de desenvolvimento de software, atuando como programador.
+
+📞 Contato/WhatsApp: (48) 98841-7522

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace SistemaAgendamento.Aluno;
 
 public class AlunoRepository : IAlunoRepository
@@ -29,5 +31,10 @@ public class AlunoRepository : IAlunoRepository
             _logger.LogError(ex, "Erro ao salvar aluno no banco de dados. Nome: {nome}", aluno.nm_aluno);
             throw;
         }
+    }
+
+    public async Task<bool> VerificarAlunoExisteAsync(long id_aluno, CancellationToken cancellationToken)
+    {
+        return await _context.Alunos.AnyAsync(a => a.Id == id_aluno, cancellationToken);
     }
 }

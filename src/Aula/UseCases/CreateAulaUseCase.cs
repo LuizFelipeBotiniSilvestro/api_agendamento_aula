@@ -11,14 +11,15 @@ public class CreateAulaUseCase : ICreateAulaUseCase
         _logger = logger;
     }
 
-    public async Task<Aula?> ExecuteAsync(AulaRequest request, CancellationToken cancellationToken)
+    public async Task<Aula?> ExecuteAsync(CreateAulaDto request, CancellationToken cancellationToken)
     {
         ValidarCampos(request);
 
         var aula = new Aula
         {
+            nm_aula = request.nm_aula,
             tp_aula = TipoAulaHelper.Parse(request.tp_aula),
-            nr_capacidade = request.nr_capacidade!.Value
+            nr_capacidade = request.nr_capacidade
         };
 
         var id = await _repository.CriarAsync(aula, cancellationToken);
@@ -27,8 +28,11 @@ public class CreateAulaUseCase : ICreateAulaUseCase
         return aula;
     }
 
-    private void ValidarCampos(AulaRequest request)
+    private void ValidarCampos(CreateAulaDto request)
     {
+        if (request.nm_aula == null)
+            throw new ArgumentException("O campo 'nm_aula' é obrigatório.");
+
         if (request.tp_aula == null)
             throw new ArgumentException("O campo 'tp_aula' é obrigatório.");
 

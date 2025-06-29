@@ -26,4 +26,9 @@ public class AulaRepository : IAulaRepository
     {
         return await _context.Aula.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
+
+    public async Task<bool> VerificarAulaExisteAsync(long id_aula, CancellationToken cancellationToken)
+    {
+        return await _context.Aula.AnyAsync(a => a.Id == id_aula, cancellationToken);
+    }
 }

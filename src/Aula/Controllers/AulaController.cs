@@ -16,7 +16,7 @@ public class AulaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] AulaRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post([FromBody] CreateAulaDto request, CancellationToken cancellationToken)
     {
         try
         {

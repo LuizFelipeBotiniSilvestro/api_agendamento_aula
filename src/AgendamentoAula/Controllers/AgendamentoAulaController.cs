@@ -10,8 +10,9 @@ public class AgendamentoAulaController : ControllerBase
     private readonly ILogger<AgendamentoAulaController> _logger;
 
     public AgendamentoAulaController(
-        ICreateAgendamentoAulaUseCase createUseCase,
-        ILogger<AgendamentoAulaController> logger)
+                                      ICreateAgendamentoAulaUseCase createUseCase,
+                                      ILogger<AgendamentoAulaController> logger
+                                    )
     {
         _createUseCase = createUseCase;
         _logger = logger;
@@ -19,8 +20,9 @@ public class AgendamentoAulaController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> PostAsync(
-        [FromBody] CreateAgendamentoAulaDto dto,
-        CancellationToken cancellationToken)
+                                                [FromBody] CreateAgendamentoAulaDto dto,
+                                                CancellationToken cancellationToken
+                                               )
     {
         try
         {

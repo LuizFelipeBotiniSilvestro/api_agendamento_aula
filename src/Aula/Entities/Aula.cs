@@ -10,4 +10,8 @@ public class Aula : BaseConta
 
     [Column("nr_capacidade")]
     public int nr_capacidade { get; set; }
+
+    [Column("nm_aula")]
+    public string nm_aula { get; set; }
+    
 }
