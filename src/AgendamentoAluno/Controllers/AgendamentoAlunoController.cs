@@ -14,7 +14,7 @@ public class AgendamentoAlunoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateAgendamentoAlunoDTO dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post([FromBody] CreateAgendamentoAlunoDto dto, CancellationToken cancellationToken)
     {
         try
         {

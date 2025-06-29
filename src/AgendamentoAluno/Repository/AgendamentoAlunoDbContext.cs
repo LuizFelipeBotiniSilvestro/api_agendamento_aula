@@ -6,10 +6,10 @@ public class AgendamentoAlunoDbContext : DbContext
 {
     public AgendamentoAlunoDbContext(DbContextOptions<AgendamentoAlunoDbContext> options) : base(options) { }
 
-    public DbSet<AgendamentoAluno> AgendamentoAluno => Set<AgendamentoAluno>();
+    public DbSet<AgendamentoAlunoEntity> AgendamentoAluno => Set<AgendamentoAlunoEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<AgendamentoAluno>().ToTable("tb_agendamento_aluno", "agendamento");
+        modelBuilder.Entity<AgendamentoAlunoEntity>().ToTable("tb_agendamento_aluno", "agendamento");
     }
 }

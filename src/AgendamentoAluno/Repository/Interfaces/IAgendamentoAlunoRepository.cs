@@ -2,7 +2,10 @@ namespace SistemaAgendamento.AgendamentoAluno;
 
 public interface IAgendamentoAlunoRepository
 {
-    /*Task<int> ObterTotalAgendamentosAlunoMesAsync(long id_aluno, int ano, int mes, CancellationToken cancellationToken);*/
-    /*Task<int> ObterTotalAgendadosNaAulaAsync(long id_aula, DateTime dt_aula, CancellationToken cancellationToken);*/
-    Task<AgendamentoAluno> CriarAsync(AgendamentoAluno agendamento, CancellationToken cancellationToken);
+    Task<bool> VerificarAlunoExisteAsync(long id_aluno, CancellationToken cancellationToken);
+    Task<bool> VerificarAulaExisteAsync(long id_aula, CancellationToken cancellationToken);
+    Task<bool> VerificarAgendamentoAulaExisteAsync(long id_agendamento_aula, CancellationToken cancellationToken);
+    Task<int> ObterTotalAgendamentosAlunoNoMes(long id_aluno, DateTime dataReferencia, CancellationToken cancellationToken);
+    Task<int> ObterTotalAlunosNaAula(long id_agendamento_aula, CancellationToken cancellationToken);
+    Task<AgendamentoAlunoEntity> CriarAsync(AgendamentoAlunoEntity entity, CancellationToken cancellationToken);
 }

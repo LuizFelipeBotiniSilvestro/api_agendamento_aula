@@ -1,4 +1,3 @@
-using SistemaAgendamento.Aula;
 using SistemaAgendamento.Aluno;
 
 namespace SistemaAgendamento.AgendamentoAluno;
@@ -7,50 +6,53 @@ public class CreateAgendamentoAlunoUseCase : ICreateAgendamentoAlunoUseCase
 {
     private readonly IAgendamentoAlunoRepository _repository;
     private readonly IAlunoRepository _alunoRepository;
-    private readonly IAulaRepository _aulaRepository;
 
     public CreateAgendamentoAlunoUseCase(
-                                        IAgendamentoAlunoRepository repository,
-                                        IAlunoRepository alunoRepository,
-                                        IAulaRepository aulaRepository
-                                        )
+        IAgendamentoAlunoRepository repository,
+        IAlunoRepository alunoRepository)
     {
         _repository = repository;
         _alunoRepository = alunoRepository;
-        _aulaRepository = aulaRepository;
     }
 
-    public async Task<AgendamentoAluno> ExecutarAsync(CreateAgendamentoAlunoDTO dto, CancellationToken cancellationToken)
+    public async  Task<AgendamentoAlunoEntity> ExecutarAsync(CreateAgendamentoAlunoDto dto, CancellationToken cancellationToken)
     {
-        if (dto.id_aluno <= 0)
-            throw new ArgumentException("O id_aluno é obrigatório.");
-
-        if (dto.id_aula <= 0)
-            throw new ArgumentException("O id_aula é obrigatório.");
-
-        var alunoExiste = await _alunoRepository.VerificarAlunoExisteAsync(dto.id_aluno, cancellationToken);
-        if (!alunoExiste)
+        if (!await _repository.VerificarAlunoExisteAsync(dto.id_aluno, cancellationToken))
             throw new ArgumentException("Aluno não encontrado.");
 
-        var aulaExiste = await _aulaRepository.VerificarAulaExisteAsync(dto.id_aula, cancellationToken);
-        if (!aulaExiste)
+        if (!await _repository.VerificarAulaExisteAsync(dto.id_aula, cancellationToken))
             throw new ArgumentException("Aula não encontrada.");
 
-        /*
-        var capacidadeAtingida = await _repository.VerificarCapacidadeAtingidaAsync(dto.id_aula, dto.dt_aula, cancellationToken);
-        if (capacidadeAtingida)
-            throw new InvalidOperationException("Capacidade da aula atingida.");
+        // id_agendamento_aula é por exemplo: pilates 30/06/2025 20:00h
+        if (!await _repository.VerificarAgendamentoAulaExisteAsync(dto.id_agendamento_aula, cancellationToken))
+            throw new ArgumentException("Agendamento de aula não encontrado.");
 
-        var excedeuLimite = await _repository.ExcedeuLimitePlanoAsync(dto.id_aluno, dto.dt_aula, cancellationToken);
-        if (excedeuLimite)
-            throw new InvalidOperationException("Aluno excedeu o limite de agendamentos permitidos pelo plano.");*/
-
-        var agendamento = new AgendamentoAluno
+    /*
+        var plano = await _alunoRepository.ObterTipoPlanoAsync(dto.id_aluno, cancellationToken);
+        var limite = plano switch
         {
-            id_aluno = dto.id_aluno,
-            id_aula = dto.id_aula
+            PlanoTipo.Mensal => 12,
+            PlanoTipo.Trimestral => 20,
+            PlanoTipo.Anual => 30,
+            _ => throw new Exception("Plano inválido.")
         };
 
-        return await _repository.CriarAsync(agendamento, cancellationToken);
+        var totalAgendado = await _repository.ObterTotalAgendamentosAlunoNoMes(dto.id_aluno, DateTime.UtcNow, cancellationToken);
+        if (totalAgendado >= limite)
+            throw new ArgumentException($"Limite de agendamentos mensais do plano {PlanoTipoHelper.ToNome(plano)} atingido.");
+
+        var totalAlunos = await _repository.ObterTotalAlunosNaAula(dto.id_agendamento_aula, cancellationToken);
+        var capacidade = await _alunoRepository.ObterCapacidadeAulaAsync(dto.id_aula, cancellationToken);
+        if (totalAlunos >= capacidade)
+            throw new ArgumentException("Capacidade máxima da aula atingida.");*/
+
+        var entity = new AgendamentoAlunoEntity
+        {
+            id_aluno = dto.id_aluno,
+            id_aula = dto.id_aula,
+            id_agendamento_aula = dto.id_agendamento_aula
+        };
+
+        return await _repository.CriarAsync(entity, cancellationToken);
     }
 }

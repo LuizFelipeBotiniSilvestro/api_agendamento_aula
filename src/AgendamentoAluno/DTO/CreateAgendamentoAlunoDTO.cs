@@ -1,7 +1,8 @@
 namespace SistemaAgendamento.AgendamentoAluno;
 
-public class CreateAgendamentoAlunoDTO
+public class CreateAgendamentoAlunoDto
 {
-    public long id_aluno { get; set; } // Id do aluno
-    public long id_aula { get; set; } // Id da aula (já com tipo, data, etc...)
+    public long id_aluno { get; set; }
+    public long id_aula { get; set; }
+    public long id_agendamento_aula { get; set; }
 }
