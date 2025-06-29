@@ -20,6 +20,11 @@ public class AgendamentoAulaRepository : IAgendamentoAulaRepository
         return agendamento;
     }
 
+    public async Task<bool> VerificarAgendamentoAulaExisteAsync(long id_agendamento_aula, CancellationToken cancellationToken)
+    {
+        return await _context.AgendamentoAula.AnyAsync(x => x.Id == id_agendamento_aula, cancellationToken);
+    }
+
     public async Task<List<GetAgendamentoAulaResult>> GetAgendamentoAulaAsync(CancellationToken cancellationToken)
     {
         var sql = @"

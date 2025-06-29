@@ -35,6 +35,7 @@ builder.Services.AddScoped<IGetAgendamentoAulaUseCase, GetAgendamentoAulaUseCase
 builder.Services.AddScoped<IAgendamentoAulaRepository, AgendamentoAulaRepository>();
 // (AgendamentoAluno)
 builder.Services.AddScoped<ICreateAgendamentoAlunoUseCase, CreateAgendamentoAlunoUseCase>();
+builder.Services.AddScoped<IGetAgendamentoAlunoUseCase, GetAgendamentoAlunoUseCase>();
 builder.Services.AddScoped<IAgendamentoAlunoRepository, AgendamentoAlunoRepository>();
 
 var app = builder.Build();

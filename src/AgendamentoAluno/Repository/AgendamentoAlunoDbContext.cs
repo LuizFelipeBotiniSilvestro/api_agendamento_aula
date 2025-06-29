@@ -11,5 +11,8 @@ public class AgendamentoAlunoDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AgendamentoAlunoEntity>().ToTable("tb_agendamento_aluno", "agendamento");
+
+        // View para get
+        modelBuilder.Entity<GetAgendamentoAlunoResult>().HasNoKey().ToView(null);
     }
 }

@@ -25,21 +25,6 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
         _aulaContext = aulaContext;
     }
 
-    public async Task<bool> VerificarAlunoExisteAsync(long id_aluno, CancellationToken cancellationToken)
-    {
-        return await _alunoContext.Alunos.AnyAsync(x => x.Id == id_aluno, cancellationToken);
-    }
-
-    public async Task<bool> VerificarAulaExisteAsync(long id_aula, CancellationToken cancellationToken)
-    {
-        return await _aulaContext.Aula.AnyAsync(x => x.Id == id_aula, cancellationToken);
-    }
-
-    public async Task<bool> VerificarAgendamentoAulaExisteAsync(long id_agendamento_aula, CancellationToken cancellationToken)
-    {
-        return await _agendamentoAulaDbContext.AgendamentoAula.AnyAsync(x => x.Id == id_agendamento_aula, cancellationToken);
-    }
-
     public async Task<int> ObterTotalAgendamentosAlunoNoMes(long id_aluno, DateTime dataReferencia, CancellationToken cancellationToken)
     {
         var primeiroDia = new DateTime(dataReferencia.Year, dataReferencia.Month, 1);
@@ -61,5 +46,29 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
         await _context.AgendamentoAluno.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return entity;
+    }
+
+    public async Task<List<GetAgendamentoAlunoResult>> GetAsync(CancellationToken cancellationToken)
+    {
+        const string sql = @"
+            SELECT 
+                aa.id,
+                aa.id_aluno,
+                a.nm_aluno,
+                aa.id_agendamento_aula,
+                ag.id_aula,
+                au.nm_aula,
+                ag.dt_aula,
+                aa.dt_inc
+            FROM agendamento.tb_agendamento_aluno aa
+            INNER JOIN cadastro.tb_aluno a ON a.id = aa.id_aluno
+            INNER JOIN agendamento.tb_agendamento_aula ag ON ag.id = aa.id_agendamento_aula
+            INNER JOIN cadastro.tb_aula au ON au.id = ag.id_aula
+        ";
+
+        return await _context
+            .Set<GetAgendamentoAlunoResult>()
+            .FromSqlRaw(sql)
+            .ToListAsync(cancellationToken);
     }
 }
