@@ -11,5 +11,8 @@ public class AgendamentoAulaDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AgendamentoAula>().ToTable("tb_agendamento_aula", "agendamento");
+
+        // Mapeamento para resultados customizados (DTOs)
+        modelBuilder.Entity<GetAgendamentoAulaResult>().HasNoKey().ToView(null);
     }
 }

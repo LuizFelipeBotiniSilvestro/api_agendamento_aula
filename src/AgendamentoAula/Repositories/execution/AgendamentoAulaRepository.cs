@@ -6,6 +6,7 @@ public class AgendamentoAulaRepository : IAgendamentoAulaRepository
 {
     private readonly AgendamentoAulaDbContext _context;
 
+
     public AgendamentoAulaRepository(AgendamentoAulaDbContext context)
     {
         _context = context;
@@ -17,5 +18,25 @@ public class AgendamentoAulaRepository : IAgendamentoAulaRepository
         await _context.SaveChangesAsync(cancellationToken);
         await _context.Entry(agendamento).ReloadAsync(cancellationToken);
         return agendamento;
+    }
+
+    public async Task<List<GetAgendamentoAulaResult>> GetAgendamentoAulaAsync(CancellationToken cancellationToken)
+    {
+        var sql = @"
+                    SELECT 
+                        aa.id,
+                        aa.id_aula,
+                        a.nm_aula,
+                        aa.dt_aula
+                    FROM agendamento.tb_agendamento_aula aa
+                    INNER JOIN cadastro.tb_aula a ON a.id = aa.id_aula
+                    ORDER BY aa.dt_aula
+                ";
+
+                return await _context
+                    .Set<GetAgendamentoAulaResult>()
+                    .FromSqlRaw(sql)
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
     }
 }

@@ -7,14 +7,19 @@ namespace SistemaAgendamento.AgendamentoAula;
 public class AgendamentoAulaController : ControllerBase
 {
     private readonly ICreateAgendamentoAulaUseCase _createUseCase;
+
+    private readonly IGetAgendamentoAulaUseCase _getUseCase;
+
     private readonly ILogger<AgendamentoAulaController> _logger;
 
     public AgendamentoAulaController(
                                       ICreateAgendamentoAulaUseCase createUseCase,
+                                      IGetAgendamentoAulaUseCase getUseCase,
                                       ILogger<AgendamentoAulaController> logger
                                     )
     {
         _createUseCase = createUseCase;
+        _getUseCase = getUseCase;
         _logger = logger;
     }
 
@@ -38,6 +43,20 @@ public class AgendamentoAulaController : ControllerBase
         {
             _logger.LogError(ex, "Erro inesperado ao criar agendamento.");
             return StatusCode(500, new { erro = "Erro interno no servidor." });
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _getUseCase.ExecuteAsync(cancellationToken);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 }
