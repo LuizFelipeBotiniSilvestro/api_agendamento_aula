@@ -9,7 +9,7 @@ Este sistema permite:
 - Cadastro de **alunos**, com plano (Mensal, Trimestral, Anual)
 - Cadastro de **aulas** (Cross, Musculação, Pilates, Spinning)
 - Cadastro de **agendamento de aulas** (Aula e Data)
-- Cadastro de **agendamento de alunos nas aulas**
+- Cadastro de **agendamento de alunos no agendamento de aulas**
 - Relatórios por aluno com total de agendamentos e aulas mais frequentadas
 
 ## 📚 Fluxograma de funcionamento
