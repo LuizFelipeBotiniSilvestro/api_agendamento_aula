@@ -9,21 +9,12 @@ namespace SistemaAgendamento.AgendamentoAluno;
 public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
 {
     private readonly AgendamentoAlunoDbContext _context;
-    private readonly AgendamentoAulaDbContext _agendamentoAulaDbContext;
-    private readonly AlunoDbContext _alunoContext;
-    private readonly AulaDbContext _aulaContext;
 
     public AgendamentoAlunoRepository(
-                                      AgendamentoAlunoDbContext context,
-                                      AgendamentoAulaDbContext agendamentoAulaDbContext,
-                                      AlunoDbContext alunoContext,
-                                      AulaDbContext aulaContext
+                                      AgendamentoAlunoDbContext context
                                      )
     {
         _context = context;
-        _agendamentoAulaDbContext = agendamentoAulaDbContext; 
-        _alunoContext = alunoContext;
-        _aulaContext = aulaContext;
     }
 
     public async Task<int> ObterTotalAgendamentosAlunoNoMes(long id_aluno, DateTime dataReferencia, CancellationToken cancellationToken)
@@ -97,4 +88,41 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
 
         return await _context.Database.SqlQueryRaw<GetTiposAulaMaisFrequentesResult>(sql, param).ToListAsync(cancellationToken);
     }
+
+    public async Task<List<GetAulasAgendadasNoMesResult>> GetAulasAgendadasNoMesAsync(long id_aluno, int ano, int mes, CancellationToken cancellationToken)
+    {
+        var sql = $@"
+            SELECT 
+                aluno.nm_aluno,
+                agendamento.id AS id_agendamento_aula,
+                aa.dt_aula,
+                aula.nm_aula,
+                CASE aula.tp_aula 
+                    WHEN 1 THEN 'Cross'
+                    WHEN 2 THEN 'Musculação'
+                    WHEN 3 THEN 'Pilates'
+                    WHEN 4 THEN 'Spinning'
+                    ELSE 'Desconhecido'
+                END AS tp_aula
+            FROM agendamento.tb_agendamento_aluno agendamento
+            INNER JOIN cadastro.tb_aluno aluno ON aluno.id = agendamento.id_aluno
+            INNER JOIN agendamento.tb_agendamento_aula aa ON aa.id = agendamento.id_agendamento_aula
+            INNER JOIN cadastro.tb_aula aula ON aula.id = aa.id_aula
+            WHERE agendamento.id_aluno = @id_aluno
+            AND EXTRACT(MONTH FROM aa.dt_aula) = @mes
+            AND EXTRACT(YEAR FROM aa.dt_aula) = @ano
+            ORDER BY aa.dt_aula ASC";
+
+        var parametros = new[]
+        {
+            new NpgsqlParameter("id_aluno", id_aluno),
+            new NpgsqlParameter("mes", mes),
+            new NpgsqlParameter("ano", ano)
+        };
+
+        return await _context.Database
+            .SqlQueryRaw<GetAulasAgendadasNoMesResult>(sql, parametros)
+            .ToListAsync(cancellationToken);
+    }
+
 }

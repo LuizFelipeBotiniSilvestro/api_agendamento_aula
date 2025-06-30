@@ -8,17 +8,19 @@ public class AgendamentoAlunoController : ControllerBase
 {
     private readonly ICreateAgendamentoAlunoUseCase _createUseCase;
     private readonly IGetAgendamentoAlunoUseCase _getUseCase;
-
     private readonly IGetTiposAulaMaisFrequentesUseCase _getTiposAulaMaisFrequentesPorAlunoUseCase;
+    private readonly IGetAulasAgendadasNoMesUseCase _getAulasAgendadasNoMesUseCase;
 
     public AgendamentoAlunoController(ICreateAgendamentoAlunoUseCase createUseCase,
                                       IGetAgendamentoAlunoUseCase getUseCase,
-                                      IGetTiposAulaMaisFrequentesUseCase getTiposAulaMaisFrequentesPorAlunoUseCase
+                                      IGetTiposAulaMaisFrequentesUseCase getTiposAulaMaisFrequentesPorAlunoUseCase,
+                                      IGetAulasAgendadasNoMesUseCase getAulasAgendadasNoMesUseCase
                                       )
     {
         _createUseCase = createUseCase;
         _getUseCase = getUseCase;
         _getTiposAulaMaisFrequentesPorAlunoUseCase = getTiposAulaMaisFrequentesPorAlunoUseCase;
+        _getAulasAgendadasNoMesUseCase = getAulasAgendadasNoMesUseCase;
     }
 
     [HttpPost]
@@ -63,6 +65,20 @@ public class AgendamentoAlunoController : ControllerBase
         try
         {
             var result = await _getTiposAulaMaisFrequentesPorAlunoUseCase.ExecuteAsync(id_aluno, cancellationToken);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("getAulasAgendadasNoMes/{id_aluno}/{ano}/{mes}")]
+    public async Task<IActionResult> GetAulasAgendadasNoMes(long id_aluno, int ano, int mes, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _getAulasAgendadasNoMesUseCase.ExecuteAsync(id_aluno, ano, mes, cancellationToken);
             return Ok(result);
         }
         catch (Exception ex)

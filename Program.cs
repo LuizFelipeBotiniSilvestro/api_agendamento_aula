@@ -38,6 +38,8 @@ builder.Services.AddScoped<ICreateAgendamentoAlunoUseCase, CreateAgendamentoAlun
 builder.Services.AddScoped<IGetAgendamentoAlunoUseCase, GetAgendamentoAlunoUseCase>();
 builder.Services.AddScoped<IAgendamentoAlunoRepository, AgendamentoAlunoRepository>();
 builder.Services.AddScoped<IGetTiposAulaMaisFrequentesUseCase, GetTiposAulaMaisFrequentesUseCase>();
+builder.Services.AddScoped<IGetAulasAgendadasNoMesUseCase, GetAulasAgendadasNoMesUseCase>();
+
 
 var app = builder.Build();
 
