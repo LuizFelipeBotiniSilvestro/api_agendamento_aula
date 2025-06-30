@@ -50,7 +50,13 @@ public class AlunoRepository : IAlunoRepository
         const string sql = @"
             SELECT 
                 id AS id_aluno, 
-                tp_plano
+                tp_plano,
+                CASE 
+                    WHEN tp_plano = 1 THEN 12
+                    WHEN tp_plano = 2 THEN 20
+                    WHEN tp_plano = 3 THEN 30
+                    ELSE 0
+                END AS limite_agendamentos
             FROM cadastro.tb_aluno
             WHERE id = @id_aluno";
 
@@ -63,18 +69,6 @@ public class AlunoRepository : IAlunoRepository
         if (aluno is null)
             throw new ArgumentException("Aluno não encontrado.");
 
-        var tipoPlano = PlanoTipoHelper.Parse(aluno.tp_plano);
-        aluno.tp_plano = (long)tipoPlano;
-        aluno.limite_agendamentos = tipoPlano switch
-        {
-            PlanoTipo.Mensal => 12,
-            PlanoTipo.Trimestral => 20,
-            PlanoTipo.Anual => 30,
-            _ => throw new Exception("Plano inválido.")
-        };
-
         return aluno;
     }
-
-
 }
