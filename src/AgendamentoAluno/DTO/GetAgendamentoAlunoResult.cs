@@ -9,5 +9,4 @@ public class GetAgendamentoAlunoResult
     public long id_aula { get; set; }
     public string nm_aula { get; set; } = string.Empty;
     public DateTime dt_aula { get; set; }
-    public DateTime dt_inc { get; set; }
 }

@@ -22,7 +22,7 @@ public class AlunoRepository : IAlunoRepository
             await _context.SaveChangesAsync(cancellationToken);
 
             
-            // Atualiza os campos gerados automaticamente, como dt_inc
+            // Atualiza os campos gerados automaticamente, como id
             await _context.Entry(aluno).ReloadAsync(cancellationToken);
 
             return aluno;
@@ -36,7 +36,7 @@ public class AlunoRepository : IAlunoRepository
 
     public async Task<List<Aluno>> ListarAsync(CancellationToken cancellationToken)
     {
-        return await _context.Alunos.AsNoTracking().OrderByDescending(x => x.dt_inc).ToListAsync(cancellationToken);
+        return await _context.Alunos.AsNoTracking().OrderByDescending(x => x.Id).ToListAsync(cancellationToken);
     }
 
     public async Task<bool> VerificarAlunoExisteAsync(long id_aluno, CancellationToken cancellationToken)

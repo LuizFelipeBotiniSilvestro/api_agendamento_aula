@@ -10,7 +10,4 @@ public abstract class BaseConta
     [ReadOnly(true)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
-
-    [Column("dt_inc")]
-    public DateTime dt_inc { get; set; } // preenchida automaticamente no banco
 }

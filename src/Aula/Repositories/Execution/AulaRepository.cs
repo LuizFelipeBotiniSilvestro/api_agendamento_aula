@@ -16,7 +16,7 @@ public class AulaRepository : IAulaRepository
         await _context.Aula.AddAsync(aula, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        // Atualiza os campos gerados automaticamente, como dt_inc
+        // Atualiza os campos gerados automaticamente, como id
         await _context.Entry(aula).ReloadAsync(cancellationToken);
         
         return aula;

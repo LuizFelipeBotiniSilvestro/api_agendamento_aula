@@ -14,17 +14,6 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
         _context = context;
     }
 
-    public async Task<int> ObterTotalAgendamentosAlunoNoMes(long id_aluno, DateTime dataReferencia, CancellationToken cancellationToken)
-    {
-        var primeiroDia = new DateTime(dataReferencia.Year, dataReferencia.Month, 1);
-        var ultimoDia = primeiroDia.AddMonths(1).AddDays(-1);
-
-        return await _context.AgendamentoAluno
-            .CountAsync(x => x.id_aluno == id_aluno &&
-                             x.dt_inc >= primeiroDia &&
-                             x.dt_inc <= ultimoDia, cancellationToken);
-    }
-
     public async Task<int> ObterTotalAlunosNaAula(long id_agendamento_aula, CancellationToken cancellationToken)
     {
         return await _context.AgendamentoAluno.CountAsync(x => x.id_agendamento_aula == id_agendamento_aula, cancellationToken);
@@ -47,8 +36,7 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
                 aa.id_agendamento_aula,
                 ag.id_aula,
                 au.nm_aula,
-                ag.dt_aula,
-                aa.dt_inc
+                ag.dt_aula
             FROM agendamento.tb_agendamento_aluno aa
             INNER JOIN cadastro.tb_aluno a ON a.id = aa.id_aluno
             INNER JOIN agendamento.tb_agendamento_aula ag ON ag.id = aa.id_agendamento_aula

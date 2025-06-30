@@ -17,8 +17,7 @@ public class GetAlunosUseCase : IGetAlunosUseCase
         {
             id = a.Id.HasValue ? a.Id.Value : 0,
             nm_aluno = a.nm_aluno,
-            tp_plano = PlanoTipoHelper.ToNome((PlanoTipo)a.tp_plano),
-            dt_inc = a.dt_inc
+            tp_plano = PlanoTipoHelper.ToNome((PlanoTipo)a.tp_plano)
         }).ToList();
     }
 }
