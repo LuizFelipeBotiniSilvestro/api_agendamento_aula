@@ -12,7 +12,7 @@ Este sistema permite:
 - Cadastro de **agendamento de alunos nas aulas**
 - Relatórios por aluno com total de agendamentos e aulas mais frequentadas
 
-Fluxograma de funcionamento
+## 📚 Fluxograma de funcionamento
 Etapas:
 1. Cadastro de Aula:
 Ex: 
@@ -33,7 +33,7 @@ dt_aula: 30/06/2025 20:00h
 id_aula: 1 (Pilates)
 dt_aula: 07/07/2025 20:00h
 
-4. Cadastro de Agendamento do Aluno:
+4. Cadastro de Agendamento do Aluno na aula:
 Ex: 
 id_aluno: 1 (Luiz)
 id_agendamento_aula: 1  (Pilates - 30/06/2025 20:00h)
@@ -41,7 +41,7 @@ id_agendamento_aula: 1  (Pilates - 30/06/2025 20:00h)
 id_aluno: 1 (Luiz)
 id_agendamento_aula: 2  (Pilates - 07/07/2025 20:00h)
 
-"Ou seja, sabe-se que Luiz está vinculado às aulas de Pilates toda segunda-feira 20:00h".
+*Ou seja, sabe-se que Luiz está vinculado às aulas de Pilates toda segunda-feira 20:00h.
 ---
 
 ## 🧱 Estrutura do Projeto

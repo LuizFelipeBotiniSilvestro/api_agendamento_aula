@@ -44,4 +44,17 @@ public class AgendamentoAulaRepository : IAgendamentoAulaRepository
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
     }
+
+    public async Task<DateTime> ObterDataAulaAsync(long id_agendamento_aula, CancellationToken cancellationToken)
+    {
+        var dtAula = await _context.AgendamentoAula
+            .Where(x => x.Id == id_agendamento_aula)
+            .Select(x => x.dt_aula)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (dtAula == default)
+            throw new ArgumentException("Data da aula não encontrada.");
+
+        return dtAula;
+    }
 }

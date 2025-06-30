@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace SistemaAgendamento.Aluno;
 
@@ -42,4 +43,38 @@ public class AlunoRepository : IAlunoRepository
     {
         return await _context.Alunos.AnyAsync(a => a.Id == id_aluno, cancellationToken);
     }
+
+    //
+   public async Task<LimitePlanoAlunoResult> ObterLimitePlanoAlunoAsync(long id_aluno, CancellationToken cancellationToken)
+    {
+        const string sql = @"
+            SELECT 
+                id AS id_aluno, 
+                tp_plano
+            FROM cadastro.tb_aluno
+            WHERE id = @id_aluno";
+
+        var param = new NpgsqlParameter("id_aluno", id_aluno);
+
+        var aluno = await _context.Database
+            .SqlQueryRaw<LimitePlanoAlunoResult>(sql, [param])
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (aluno is null)
+            throw new ArgumentException("Aluno não encontrado.");
+
+        var tipoPlano = PlanoTipoHelper.Parse(aluno.tp_plano);
+        aluno.tp_plano = (long)tipoPlano;
+        aluno.limite_agendamentos = tipoPlano switch
+        {
+            PlanoTipo.Mensal => 12,
+            PlanoTipo.Trimestral => 20,
+            PlanoTipo.Anual => 30,
+            _ => throw new Exception("Plano inválido.")
+        };
+
+        return aluno;
+    }
+
+
 }

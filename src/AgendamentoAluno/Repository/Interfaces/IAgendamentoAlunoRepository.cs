@@ -10,4 +10,7 @@ public interface IAgendamentoAlunoRepository
     //
     Task<List<GetTiposAulaMaisFrequentesResult>> ObterTiposAulaMaisFrequentesPorAlunoAsync(long id_aluno, CancellationToken cancellationToken);
     Task<List<GetAulasAgendadasNoMesResult>> GetAulasAgendadasNoMesAsync(long id_aluno, int ano, int mes, CancellationToken cancellationToken);
+    Task<int> ObterVagasRestantesAsync(long id_agendamento_aula, CancellationToken cancellationToken);
+    Task<int> ObterTotalAgendamentosAlunoNoMes(long id_aluno, int ano, int mes, CancellationToken cancellationToken);
+
 }

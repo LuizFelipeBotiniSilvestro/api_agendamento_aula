@@ -10,18 +10,15 @@ public class CreateAgendamentoAlunoUseCase : ICreateAgendamentoAlunoUseCase
     private readonly IAlunoRepository _alunoRepository;
     private readonly IAgendamentoAulaRepository _agendamentoAulaRepository;
 
-    private readonly IAulaRepository _aulaRepository;
 
     public CreateAgendamentoAlunoUseCase(
                                           IAgendamentoAlunoRepository repository,
                                           IAlunoRepository alunoRepository,
-                                          IAulaRepository aulaRepository,
                                           IAgendamentoAulaRepository agendamentoAulaRepository
                                           )
     {
         _repository = repository;
         _alunoRepository = alunoRepository;
-        _aulaRepository = aulaRepository;
         _agendamentoAulaRepository = agendamentoAulaRepository;
     }
 
@@ -33,6 +30,24 @@ public class CreateAgendamentoAlunoUseCase : ICreateAgendamentoAlunoUseCase
         // id_agendamento_aula é por exemplo: pilates 30/06/2025 20:00h
         if (!await _agendamentoAulaRepository.VerificarAgendamentoAulaExisteAsync(dto.id_agendamento_aula, cancellationToken))
             throw new ArgumentException("Agendamento de aula não encontrado.");
+
+        // Verifica se tem a quantidade disponível
+        var qtdeDisponivel = await _repository.ObterVagasRestantesAsync(dto.id_agendamento_aula, cancellationToken);
+        if (qtdeDisponivel <= 0)
+            throw new ArgumentException("Capacidade máxima da aula atingida.");
+
+        // Obtém os dados da aula
+        var dataAula = await _agendamentoAulaRepository.ObterDataAulaAsync(dto.id_agendamento_aula, cancellationToken);
+        var ano = dataAula.Year;
+        var mes = dataAula.Month;
+
+        // Obtém o plano do aluno
+        var plano = await _alunoRepository.ObterLimitePlanoAlunoAsync(dto.id_aluno, cancellationToken);
+
+        // Conta quantos agendamentos o aluno já tem no mês
+        var totalAgendado = await _repository.ObterTotalAgendamentosAlunoNoMes(dto.id_aluno, ano, mes, cancellationToken);
+        if (totalAgendado > plano.limite_agendamentos)
+            throw new ArgumentException($"Limite de agendamentos mensais do plano atingido ({plano.limite_agendamentos} aulas/mês).");
 
         var entity = new AgendamentoAlunoEntity
         {

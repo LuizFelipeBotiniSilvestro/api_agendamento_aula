@@ -1,8 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using SistemaAgendamento.AgendamentoAula;
-using SistemaAgendamento.Aluno;
-using SistemaAgendamento.Aula;
 
 namespace SistemaAgendamento.AgendamentoAluno;
 
@@ -124,5 +121,52 @@ public class AgendamentoAlunoRepository : IAgendamentoAlunoRepository
             .SqlQueryRaw<GetAulasAgendadasNoMesResult>(sql, parametros)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<int> ObterVagasRestantesAsync(long id_agendamento_aula, CancellationToken cancellationToken)
+    {
+        var sql = @"
+            SELECT 
+                (aula.nr_capacidade - COUNT(agendamento_aluno.id)) AS vagas_restantes
+            FROM agendamento.tb_agendamento_aula agendamento_aula
+            INNER JOIN cadastro.tb_aula aula ON aula.id = agendamento_aula.id_aula
+            LEFT JOIN agendamento.tb_agendamento_aluno agendamento_aluno ON agendamento_aluno.id_agendamento_aula = agendamento_aula.id
+            WHERE agendamento_aula.id = @id_agendamento_aula
+            GROUP BY aula.nr_capacidade";
+
+        var param = new NpgsqlParameter("id_agendamento_aula", id_agendamento_aula);
+
+        var resultado = await _context.Database
+            .SqlQueryRaw<VagasRestantesResult>(sql, [param])
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return resultado?.vagas_restantes ?? 0;
+    }
+
+    public async Task<int> ObterTotalAgendamentosAlunoNoMes(long id_aluno, int ano, int mes, CancellationToken cancellationToken)
+    {
+        const string sql = @"
+                           SELECT 
+                              COUNT(*) AS total_agendamentos
+                           FROM agendamento.tb_agendamento_aluno aluno
+                           INNER JOIN agendamento.tb_agendamento_aula aula ON aula.id = aluno.id_agendamento_aula
+                            WHERE aluno.id_aluno = @id_aluno
+                            AND DATE_PART('year', aula.dt_aula) = @ano
+                            AND DATE_PART('month', aula.dt_aula) = @mes
+                            ";
+
+        var parametros = new[]
+        {
+            new NpgsqlParameter("id_aluno", id_aluno),
+            new NpgsqlParameter("ano", ano),
+            new NpgsqlParameter("mes", mes)
+        };
+
+        var resultado = await _context.Database
+            .SqlQueryRaw<TotalAgendamentosAlunoResult>(sql, parametros)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return resultado?.total_agendamentos ?? 0;
+    }
+
 
 }

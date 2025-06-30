@@ -7,4 +7,7 @@ public interface IAlunoRepository
     Task<List<Aluno>> ListarAsync(CancellationToken cancellationToken);
 
     Task<bool> VerificarAlunoExisteAsync(long id_aluno, CancellationToken cancellationToken);
+    
+    //
+    Task<LimitePlanoAlunoResult> ObterLimitePlanoAlunoAsync(long id_aluno, CancellationToken cancellationToken);
 }
