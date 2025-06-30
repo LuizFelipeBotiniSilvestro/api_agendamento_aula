@@ -1,6 +1,5 @@
 using SistemaAgendamento.AgendamentoAula;
 using SistemaAgendamento.Aluno;
-using SistemaAgendamento.Aula;
 
 namespace SistemaAgendamento.AgendamentoAluno;
 
@@ -46,6 +45,8 @@ public class CreateAgendamentoAlunoUseCase : ICreateAgendamentoAlunoUseCase
 
         // Conta quantos agendamentos o aluno já tem no mês
         var totalAgendado = await _repository.ObterTotalAgendamentosAlunoNoMes(dto.id_aluno, ano, mes, cancellationToken);
+
+        // Se totalAgendados execer o limite do plano, não permite agendar.
         if (totalAgendado > plano.limite_agendamentos)
             throw new ArgumentException($"Limite de agendamentos mensais do plano atingido ({plano.limite_agendamentos} aulas/mês).");
 
